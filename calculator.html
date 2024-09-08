@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="calc.css">
+</head>
+<body>
+
+    <h1>Alchemy Calculator </h1>
+
+    <div class="container">
+        <div class="box">
+                               
+            <input type="text" id="display" disabled>
+
+            <button class="size" onclick="clearDisplay()">C</button>
+            <button class="size" onclick="appendNumber('1')">1</button>
+            <button class="size" onclick="appendNumber('2')">2</button>
+            <button class="size" onclick="appendNumber('3')">3</button>
+            <button class="size" onclick="setOperator('/')">/</button>
+            <br>
+            <button class="size" onclick="appendNumber('4')">4</button>
+            <button class="size" onclick="appendNumber('5')">5</button>
+            <button class="size" onclick="appendNumber('6')">6</button>
+            <button class="size" onclick="setOperator('*')">*</button>
+            <br>
+            <button class="size" onclick="appendNumber('7')">7</button>
+            <button class="size" onclick="appendNumber('8')">8</button>
+            <button class="size" onclick="appendNumber('9')">9</button>
+            <button class="size" onclick="setOperator('-')">-</button>
+            <br>
+            <button class="size" onclick="appendNumber('0')">0</button>
+            <button class="size" onclick="appendDecimal()">.</button>
+            <button class="size" onclick="calculate()">=</button>
+            <button class="size" onclick="setOperator('+')">+</button>
+        </div> 
+        
+    </div>
+    
+    <script>
+        let currentInput = '';   // Stores the current input (as a string)
+        let operator = '';       // Stores the current operator
+        let firstValue = '';     // Stores the first value before the operator
+        let secondValue = '';    // Stores the second value after the operator
+
+        // Function to update the display
+        function updateDisplay(value) {
+            document.getElementById('display').value = value;
+        }
+
+        // Function to append a number to the current input
+        function appendNumber(number) {
+            currentInput += number;
+            updateDisplay(currentInput);
+        }
+
+        // Function to append a decimal point
+        function appendDecimal() {
+            if (!currentInput.includes('.')) {
+                currentInput += '.';
+                updateDisplay(currentInput);
+            }
+        }
+
+        // Function to set the operator
+        function setOperator(op) {
+            if (currentInput === '') return;
+            if (firstValue === '') {
+                firstValue = currentInput;
+            } else if (secondValue === '') {
+                secondValue = currentInput;
+            }
+            operator = op;
+            currentInput = ''; // Reset input for the next number
+        }
+
+        // Function to clear the display and reset variables
+        function clearDisplay() {
+            currentInput = '';
+            operator = '';
+            firstValue = '';
+            secondValue = '';
+            updateDisplay('');
+        }
+
+        // Function to perform the calculation
+        function calculate() {
+            if (operator === '' || currentInput === '') return;
+
+            secondValue = currentInput;
+            let result = 0;
+            const num1 = parseFloat(firstValue);
+            const num2 = parseFloat(secondValue);
+
+            switch (operator) {
+                case '+':
+                    result = num1 + num2;
+                    break;
+                case '-':
+                    result = num1 - num2;
+                    break;
+                case '*':
+                    result = num1 * num2;
+                    break;
+                case '/':
+                    if (num2 !== 0) {
+                        result = num1 / num2;
+                    } else {
+                        result = 'Error'; // Handle division by zero
+                    }
+                    break;
+                default:
+                    result = 'Error';
+            }
+
+            updateDisplay(result);
+            // Reset values for next operation
+            firstValue = result.toString();
+            currentInput = '';
+            secondValue = '';
+            operator = '';
+        }
+    </script>
+
+</body>
+</html>
+
+
+<!-- <script>
+    // Function to append clicked values to the display
+    function appendToDisplay(value) {
+       document.getElementById('display').value += value;
+   }
+
+   // Function to clear the display
+   function clearDisplay() {
+       document.getElementById('display').value = '';
+   }
+
+   // Function to calculate the result
+   function calculate() {
+       const display = document.getElementById('display');
+       try {
+           // Use eval to calculate the expression
+           display.value = eval(display.value);
+       } catch (error) {
+           display.value = 'Error';
+       }
+   }
+</script>    -->
